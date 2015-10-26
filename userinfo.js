@@ -23,20 +23,6 @@ var questions = [
     },
     {
         type: "input",
-        name: "age",
-        message: "What's your age ?",
-        validate: function(value){
-            var age = value.match(/^([0-9]?\d|100)$/);
-            if(age){
-                return true;
-            }
-            else{
-                return "Please enter a valid age between 1-100";
-            }
-        }
-    },
-    {
-        type: "input",
         name: "phone",
         message: "What's your phone number ?",
         validate: function( value ) {

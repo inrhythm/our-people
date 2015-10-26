@@ -1,6 +1,6 @@
 .idea
 .sass-cache
-node_modules
+/node_modules
 dist
 bower_components
 build
