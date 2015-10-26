@@ -15,7 +15,7 @@ Hi, welcome to InRhythm <br />
 
 **What is your Name ?** Jimit Patel <br />
 **What's your age ?** 24<br />
-**What's your phine number ?** 2013770000<br />
+**What's your phone number ?** 2013770000<br />
 **Please enter the gravatar link :-** https://gravatar.com/jimit<br />
 **Please enter your twitter handle :-** jimitpatel99<br />
 **Please enter your github handle :-** jimitpatel9<br />
