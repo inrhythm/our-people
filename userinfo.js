@@ -9,6 +9,7 @@
 
 var fs = require('fs');
 var inquirer = require("inquirer");
+var MD5 = require("crypto-js/md5");
 
 console.log("Hi, welcome to InRhythm \n");
 
@@ -37,14 +38,17 @@ var questions = [
     {
         type: "input",
         name: "gravatar",
-        message: "Please enter the gravatar link :-",
+        message: "Please enter email address for gravatar link  :-",
         validate: function( value ) {
-            var pass = value.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
+            var pass = value.match(/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/);
             if (pass) {
                 return true;
             } else {
                 return "Please enter link";
             }
+        },
+        filter:function(val){
+            return "https://s.gravatar.com/avatar/" + MD5(val.trim().toLowerCase());
         }
     },
     {
