@@ -1,3 +1,5 @@
+
+
 import { expect } from 'chai';
 
 
@@ -7,32 +9,35 @@ import { validate , invalidatedMessage } from 'our-people/questions/linkedin';
 
 describe('linkedin question', () => {
 
-    describe('validate', () => {
 
-        function validated(){
+  describe('validate', () => {
 
-            return validate(validUrl);
 
-        }
-        function invalidated(){
+    function validated () {
 
-            return validate(invalidUrl);
+      return validate(validUrl);
 
-        }
+    }
 
-        it('should validate with a valid linkedin url by returning true', () => {
 
-            expect(validated()).to.be.true;
+    function invalidated () {
 
-        });
+      return validate(invalidUrl);
 
-        it(`should invalidate with a invalid linkedin url by returning string "${invalidatedMessage}"`, () => {
+    }
 
-            expect(invalidated()).to.be.equal(invalidatedMessage);
 
-        });
+    it('should validate with a valid linkedin url by returning true', () =>
 
-    })
+      expect(validated()).to.be.true);
+
+
+    it(`should invalidate with a invalid linkedin url by returning string "${invalidatedMessage}"`, () =>
+
+      expect(invalidated()).to.be.equal(invalidatedMessage));
+
+
+  });
 
 
 });

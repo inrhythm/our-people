@@ -44,7 +44,7 @@ describe('email question', () => {
   describe('filter', () => {
 
 
-    function filterOutput () {
+    function filteredOutput () {
 
       return filter(validEmailAddress);
 
@@ -53,7 +53,7 @@ describe('email question', () => {
 
     it('should create create a valid url with a valid email address', () => 
 
-      expect(filterOutput()).to.be.a('string'));
+      expect(filteredOutput()).to.be.a('string'));
 
 
   });
