@@ -28,8 +28,11 @@
   "dependencies": {
     "bluebird": "^3.0.5",
     "crypto-js": "^3.1.5",
+    "fs-extra": "^0.26.2",
     "inquirer": "^0.11.0",
-    "node-dir": "^0.1.11"
+    "node-dir": "^0.1.11",
+    "sequelize": "^3.13.0",
+    "sqlite3": "^3.1.1"
   },
   "scripts": {
     "start": "gulp --silent",
