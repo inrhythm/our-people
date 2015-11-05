@@ -1,5 +1,7 @@
 # Dragonslayer
 dist
+.idea
+.sass-cache
 
 # Logs
 logs
