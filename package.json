@@ -22,6 +22,7 @@
     "jsdom": "^6.3.0",
     "jshint-stylish": "^2.0.1",
     "mocha": "^2.3.2",
+    "mock-stdin": "^0.3.0",
     "tiny-lr": "^0.1.6",
     "vinyl-source-stream": "^1.1.0"
   },

@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 
 import { validEmailAddress, invalidEmailAddress } from '../../../helpers/email';
-import { validate, filter, invalidatedMessage } from 'our-people/questions/email-address';
+import { validate, invalidatedMessage } from 'our-people/questions/email-address';
 
 
 describe('email question', () => {
@@ -36,24 +36,6 @@ describe('email question', () => {
         string "${invalidatedMessage}"`, () =>
 
       expect(invalidated()).to.be.equal(invalidatedMessage));
-
-
-  });
-
-
-  describe('filter', () => {
-
-
-    function filteredOutput () {
-
-      return filter(validEmailAddress);
-
-    }
-
-
-    it('should create create a valid url with a valid email address', () => 
-
-      expect(filteredOutput()).to.be.a('string'));
 
 
   });
