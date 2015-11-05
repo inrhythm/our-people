@@ -29,7 +29,7 @@ describe('phone number question', () => {
 
     it('should validate with a valid phone number by returning true', () =>
 
-      expect(validated()).to.be.true)
+      expect(validated()).to.be.true);
 
 
     it(`should invalidate with a invalid phone number by returning string ${invalidatedMessage}`, () =>
