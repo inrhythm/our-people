@@ -2,11 +2,11 @@
 
 import { expect } from 'chai';
 import mockStdin from 'mock-stdin';
-import crypto from 'crypto-js';
 import fs from 'fs-extra';
 
 
 import createFileStorage from 'our-people/storage/file';
+import randomString from 'our-people/helpers/random';
 import cli from 'our-people/cli';
 import { validName } from '../../../helpers/name';
 import { validEmailAddress } from '../../../helpers/email';
@@ -15,25 +15,30 @@ import { validUrl } from '../../../helpers/url';
 import { validTwitterHandle } from '../../../helpers/twitter-handle';
 import { validPhoneNumber } from '../../../helpers/phone-number';
 
-
-const random = () => crypto.lib.WordArray.random(128/8).toString();
-
 const stdin = mockStdin.stdin();
 
-const storageName = 'engineers';
+const collection = 'engineers';
 
 function createStorage () {
 
   return createFileStorage({
 
-    path: __dirname + '/' + random() + '-db.json'
+    path: __dirname + '/' + randomString() + '-db.json'
 
   });
 
 }
 
 
-describe.only('cli', function () {
+function sendAnswers (answers) {
+
+  answers
+    .forEach((answer) => stdin.send(`${answer}\n`));
+
+}
+
+
+describe('cli', function () {
 
 
   after(() => 
@@ -41,34 +46,39 @@ describe.only('cli', function () {
     fs.removeSync(__dirname + '/*.json'));
 
 
-  function answerQuestions (storage) {
+  function answerQuestions (storage, collection) {
 
-    cli(storage, 'engineers');
+    const promise = cli(storage, collection);
 
-    stdin.send(`${validName}\n`);
-    stdin.send(`${validEmailAddress}\n`);
-    stdin.send(`${validGithubHandle}\n`);
-    stdin.send(`${validUrl}\n`);
-    stdin.send(`${validTwitterHandle}\n`);
-    stdin.send(`${validPhoneNumber}\n`);
+    sendAnswers([
+
+      validName,
+      validEmailAddress,
+      validGithubHandle,
+      validUrl,
+      validTwitterHandle,
+      validPhoneNumber
+
+    ]);
+
+    return promise;
 
   }
 
 
   
-  function storedEngineers (storage, name) {
+  function storedEngineers (storage, collection) {
 
-    answerQuestions(storage, name);
-
-    return storage(name).all();
+    return answerQuestions(storage, collection)
+      .then(storage(collection).all());
 
   }
 
 
   it('should have one stored engineer', () => 
 
-    storedEngineers(createStorage(), storageName)
-      .then((store) => expect(store).to.have.length(1)));
+    storedEngineers(createStorage(), collection)
+      .then((engineers) => expect(engineers).to.have.length(1)));
 
 
 });

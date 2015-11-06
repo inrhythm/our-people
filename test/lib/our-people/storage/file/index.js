@@ -3,20 +3,21 @@
 import { expect } from 'chai';
 
 
+import randomString from 'our-people/helpers/random';
 import fileStore from 'our-people/storage/file';
-import crypto from 'crypto-js';
 import fs from 'fs-extra';
 
 
 const validName = 'engineers';
 const validValue = { name: 'jesse' };
-const random = () => crypto.lib.WordArray.random(128/8).toString();
 
 
 function createStorage () {
 
   return fileStore({
-    path: __dirname + '/' + random() + '-db.json'
+
+    path: __dirname + '/' + randomString() + '-db.json'
+    
   });
 
 }
