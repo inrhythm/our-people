@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 
 import randomString from 'our-people/helpers/random';
-import fileStore from 'our-people/storage/file';
+import createFileStorage from 'our-people/storage/file-storage';
 import fs from 'fs-extra';
 
 
@@ -14,10 +14,10 @@ const validValue = { name: 'jesse' };
 
 function createStorage () {
 
-  return fileStore({
+  return createFileStorage({
 
     path: __dirname + '/' + randomString() + '-db.json'
-    
+
   });
 
 }

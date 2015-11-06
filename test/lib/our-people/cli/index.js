@@ -5,9 +5,11 @@ import mockStdin from 'mock-stdin';
 import fs from 'fs-extra';
 
 
-import createFileStorage from 'our-people/storage/file';
+import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
 import cli from 'our-people/cli';
+
+
 import { validName } from '../../../helpers/name';
 import { validEmailAddress } from '../../../helpers/email';
 import { validGithubHandle } from '../../../helpers/github-handle';
@@ -15,9 +17,10 @@ import { validUrl } from '../../../helpers/url';
 import { validTwitterHandle } from '../../../helpers/twitter-handle';
 import { validPhoneNumber } from '../../../helpers/phone-number';
 
-const stdin = mockStdin.stdin();
 
+const stdin = mockStdin.stdin();
 const collection = 'engineers';
+
 
 function createStorage () {
 
