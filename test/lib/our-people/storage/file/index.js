@@ -22,7 +22,7 @@ function createStorage () {
 }
 
 
-describe.only('file store', function () {
+describe('file store', function () {
 
 
   after(() => 

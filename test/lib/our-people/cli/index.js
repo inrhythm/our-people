@@ -2,10 +2,12 @@
 
 import { expect } from 'chai';
 import mockStdin from 'mock-stdin';
+import crypto from 'crypto-js';
+import fs from 'fs-extra';
 
 
-import cli from '../../../../lib/our-people/cli';
-import createStorage from '../../../helpers/storage';
+import createFileStorage from 'our-people/storage/file';
+import cli from 'our-people/cli';
 import { validName } from '../../../helpers/name';
 import { validEmailAddress } from '../../../helpers/email';
 import { validGithubHandle } from '../../../helpers/github-handle';
@@ -14,15 +16,34 @@ import { validTwitterHandle } from '../../../helpers/twitter-handle';
 import { validPhoneNumber } from '../../../helpers/phone-number';
 
 
+const random = () => crypto.lib.WordArray.random(128/8).toString();
+
 const stdin = mockStdin.stdin();
 
+const storageName = 'engineers';
 
-describe('cli', function () {
+function createStorage () {
+
+  return createFileStorage({
+
+    path: __dirname + '/' + random() + '-db.json'
+
+  });
+
+}
+
+
+describe.only('cli', function () {
+
+
+  after(() => 
+
+    fs.removeSync(__dirname + '/*.json'));
 
 
   function answerQuestions (storage) {
 
-    cli(storage);
+    cli(storage, 'engineers');
 
     stdin.send(`${validName}\n`);
     stdin.send(`${validEmailAddress}\n`);
@@ -35,20 +56,19 @@ describe('cli', function () {
 
 
   
-  function storedEngineers () {
+  function storedEngineers (storage, name) {
 
-    const storage = createStorage();
+    answerQuestions(storage, name);
 
-    answerQuestions(storage);
-
-    return storage.engineers.all();
+    return storage(name).all();
 
   }
 
 
   it('should have one stored engineer', () => 
 
-    expect(storedEngineers()).to.have.length(1));
+    storedEngineers(createStorage(), storageName)
+      .then((store) => expect(store).to.have.length(1)));
 
 
 });

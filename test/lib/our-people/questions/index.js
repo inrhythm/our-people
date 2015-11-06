@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import questions, { questionByName, questionValidatorByName } from 'our-people/questions';
 
 
-describe.only('questions', () => {
+describe('questions', () => {
 
 
   it('questions should be an array', () =>
