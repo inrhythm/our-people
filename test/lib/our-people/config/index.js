@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import getConfiguration from 'our-people/config';
 
 
-describe.only('config', function () {
+describe('config', function () {
 
 
   function branches () {
