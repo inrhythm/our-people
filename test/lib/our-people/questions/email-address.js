@@ -3,8 +3,19 @@
 import { expect } from 'chai';
 
 
-import { validEmailAddress, invalidEmailAddress } from '../../../helpers/email';
-import { validate, invalidatedMessage } from 'our-people/questions/email-address';
+import { 
+
+  validEmailAddress, 
+  invalidEmailAddress 
+
+} from '../../../helpers/email';
+
+import { 
+  
+  validate, 
+  invalidatedMessage 
+
+} from 'our-people/questions/email-address';
 
 
 describe('email question', () => {
