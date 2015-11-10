@@ -41,7 +41,7 @@
     "sqlite3": "^3.1.1"
   },
   "scripts": {
-    "start": "gulp --silent",
+    "start": "node_modules/.bin/gulp --silent",
     "node": "babel-node ./index.js",
     "phantom": "phantomjs ./bundle.js",
     "test": "NODE_PATH=./lib node_modules/.bin/mocha --color --compilers js:babel-core/register -R spec --recursive test"
