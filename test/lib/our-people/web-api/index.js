@@ -60,7 +60,7 @@ function deleteEngineer (engineer) {
 
 
 
-describe.only('web-api', function () {
+describe('web-api', function () {
 
 
   let server = null;
