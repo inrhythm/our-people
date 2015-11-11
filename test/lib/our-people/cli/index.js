@@ -41,7 +41,7 @@ function sendAnswers (answers) {
 }
 
 
-describe('cli', function () {
+describe('cli add', function () {
 
 
   after(() => 
@@ -67,7 +67,6 @@ describe('cli', function () {
     return promise;
 
   }
-
 
   
   function storedEngineers (storage, collection) {
