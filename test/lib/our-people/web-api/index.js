@@ -52,51 +52,88 @@ function addEngineer () {
 
 // DELETE
 
-function deleteEngineer (engineers) {
+function deleteEngineer (engineer) {
 
-  const payload = { _id : engineers[0]._id };
-
-  return request(requestConfig('DELETE', payload));
+  return request(requestConfig('DELETE', engineer));
 
 }
 
 
 
-describe('web-api', function () {
+describe.only('web-api', function () {
 
 
-  before((done) =>
+  let server = null;
 
-    serve(
+
+  beforeEach((done) =>
+
+    server = serve(
       webApi, 
       randomFileStorage(__dirname), 
       'engineers', 
-      port, 
+      port,
       done));
 
 
-  beforeEach(() =>
+  afterEach(() => {
 
-    removeAllRandomFileStorages(__dirname));
+    removeAllRandomFileStorages(__dirname);
+    server.close();
+
+  });
 
 
-  after(() =>
+  describe('GET /', function () {
 
-    removeAllRandomFileStorages(__dirname));
+    
+    it(`should return an empty array`, () =>
+
+      getEngineers()
+        .then((engineers) => expect(engineers).to.have.length(0)));
+
+
+  });
+
+
+  describe('POST /', function () {
+
+
+    it(`should respond with an empty list`, () =>
+
+      addEngineer()
+        .then((engineers) => expect(engineers).to.have.length(1)));
+
+
+    it(`should add an engineer`, () => 
+
+      addEngineer()
+        .then(getEngineers())
+        .then((engineers) => expect(engineers).to.have.length(1)));
+
+
+  });
+
+
   
+  describe('DELETE /', function () {
 
-  it(`should add an engineer`, () => 
+    it(`should respond with an empty list`, () =>
 
-    addEngineer()
-      .then(getEngineers())
-      .then((engineers) => expect(engineers).to.have.length(1)));
+      addEngineer()
+        .then((engineers) => deleteEngineer(engineers[0]))
+        .then((engineers) => expect(engineers).to.have.length(0)));
 
 
-  it(`should delete an engineer`, () => 
+    it(`should delete an engineer`, () => 
 
-    getEngineers()
-      .then((engineers) => deleteEngineer(engineers))
-      .then((engineers) => expect(engineers).to.have.length(0)));
+      addEngineer()
+        .then(getEngineers())
+        .then((engineers) => deleteEngineer(engineers[0]))
+        .then((engineers) => expect(engineers).to.have.length(0)));
 
+
+  });
+  
 
 });
