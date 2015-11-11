@@ -34,9 +34,9 @@ function requestConfig (method, body) {
 
 // GET
 
-function engineers () {
+function getEngineers () {
 
-  return request(url);
+  return request(requestConfig('GET'));
 
 }
 
@@ -50,35 +50,90 @@ function addEngineer () {
 }
 
 
+// DELETE
 
-describe('web-api', function () {
+function deleteEngineer (engineer) {
+
+  return request(requestConfig('DELETE', engineer));
+
+}
 
 
-  before((done) =>
 
-    serve(
+describe.only('web-api', function () {
+
+
+  let server = null;
+
+
+  beforeEach((done) =>
+
+    server = serve(
       webApi, 
       randomFileStorage(__dirname), 
       'engineers', 
-      port, 
+      port,
       done));
 
 
-  beforeEach(() =>
+  afterEach(() => {
 
-    removeAllRandomFileStorages(__dirname));
+    removeAllRandomFileStorages(__dirname);
+    server.close();
+
+  });
 
 
-  after(() =>
+  describe('GET /', function () {
 
-    removeAllRandomFileStorages(__dirname));
+    
+    it(`should return an empty array`, () =>
+
+      getEngineers()
+        .then((engineers) => expect(engineers).to.have.length(0)));
+
+
+  });
+
+
+  describe('POST /', function () {
+
+
+    it(`should respond with an empty list`, () =>
+
+      addEngineer()
+        .then((engineers) => expect(engineers).to.have.length(1)));
+
+
+    it(`should add an engineer`, () => 
+
+      addEngineer()
+        .then(getEngineers())
+        .then((engineers) => expect(engineers).to.have.length(1)));
+
+
+  });
+
+
   
+  describe('DELETE /', function () {
 
-  it(`should add an engineer`, () => 
+    it(`should respond with an empty list`, () =>
 
-    addEngineer()
-      .then(engineers())
-      .then((engineers) => expect(engineers).to.have.length(1)));
+      addEngineer()
+        .then((engineers) => deleteEngineer(engineers[0]))
+        .then((engineers) => expect(engineers).to.have.length(0)));
 
+
+    it(`should delete an engineer`, () => 
+
+      addEngineer()
+        .then(getEngineers())
+        .then((engineers) => deleteEngineer(engineers[0]))
+        .then((engineers) => expect(engineers).to.have.length(0)));
+
+
+  });
+  
 
 });
