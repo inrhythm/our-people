@@ -7,6 +7,7 @@ import fs from 'fs-extra';
 
 import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
+import createEngineer from '../../../helpers/engineer';
 import cli from 'our-people/cli';
 
 
@@ -41,6 +42,41 @@ function sendAnswers (answers) {
 }
 
 
+function addEngineer (storage, collection) {
+
+  const promise = cli(storage, collection, 'add');
+
+  sendAnswers([
+
+    validName,
+    validEmailAddress,
+    validGithubHandle,
+    validUrl,
+    validTwitterHandle,
+    validPhoneNumber
+
+  ]);
+
+  return promise;
+
+}
+
+
+function removeEngineer (storage, collection, engineer) {
+
+  const promise = cli(storage, collection, 'remove');
+
+  sendAnswers([
+
+    engineer._id
+
+  ]);
+
+  return promise;
+
+}
+
+
 describe('cli', function () {
 
 
@@ -49,39 +85,22 @@ describe('cli', function () {
     fs.removeSync(__dirname + '/*.json'));
 
 
-  function answerQuestions (storage, collection) {
+  it(`should have one stored engineer`, () => 
 
-    const promise = cli(storage, collection);
-
-    sendAnswers([
-
-      validName,
-      validEmailAddress,
-      validGithubHandle,
-      validUrl,
-      validTwitterHandle,
-      validPhoneNumber
-
-    ]);
-
-    return promise;
-
-  }
-
-
-  
-  function storedEngineers (storage, collection) {
-
-    return answerQuestions(storage, collection)
-      .then(storage(collection).all());
-
-  }
-
-
-  it('should have one stored engineer', () => 
-
-    storedEngineers(createStorage(), collection)
+    addEngineer(createStorage(), collection)
       .then((engineers) => expect(engineers).to.have.length(1)));
 
 
+  it(`should have deleted one engineer`, () => {
+
+    const storage = createStorage();
+
+    return addEngineer(storage, collection)
+      .then((engineers) => removeEngineer(storage, collection, engineers[0]))
+      .then((engineers) => expect(engineers).to.have.length(0))
+
+  });
+
+
 });
+

@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 
 
-import { validate, invalidatedMessage } from 'our-people/questions/phone-number';
-import { validPhoneNumber, invalidPhoneNumber } from '../../../helpers/phone-number';
+import { validate, invalidatedMessage } from 'our-people/questions/add/phone-number';
+import { validPhoneNumber, invalidPhoneNumber } from '../../../../helpers/phone-number';
 
 
 describe('phone number question', () => {

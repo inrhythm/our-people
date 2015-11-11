@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 
 
-import { validate, invalidatedMessage } from 'our-people/questions/name';
-import { validName, invalidName } from '../../../helpers/name';
+import { validate, invalidatedMessage } from 'our-people/questions/add/name';
+import { validName, invalidName } from '../../../../helpers/name';
 
 
 describe('name question', () => {

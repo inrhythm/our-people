@@ -8,14 +8,14 @@ import {
   validEmailAddress, 
   invalidEmailAddress 
 
-} from '../../../helpers/email';
+} from '../../../../helpers/email';
 
 import { 
   
   validate, 
   invalidatedMessage 
 
-} from 'our-people/questions/email-address';
+} from 'our-people/questions/add/email-address';
 
 
 describe('email question', () => {

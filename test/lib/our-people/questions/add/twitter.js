@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 
 
-import { filter } from 'our-people/questions/twitter';
-import validTwitterHandle from '../../../helpers/twitter-handle.js';
+import { filter } from 'our-people/questions/add/twitter';
+import validTwitterHandle from '../../../../helpers/twitter-handle.js';
 
 
 describe('twitter question', () => {

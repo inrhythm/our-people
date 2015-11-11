@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 
 
-import { filter } from 'our-people/questions/github';
-import validGithubHandle from '../../../helpers/github-handle.js';
+import { filter } from 'our-people/questions/add/github';
+import validGithubHandle from '../../../../helpers/github-handle.js';
 
 
 describe('github question', () => {
