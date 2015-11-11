@@ -52,16 +52,11 @@ function addEngineer () {
 
 // DELETE
 
-function deleteEngineer () {
+function deleteEngineer (engineers) {
 
-  return getEngineers()
-    .then((engineers) => {
+  const payload = { _id : engineers[0]._id };
 
-      const payload = { _id : engineers[0]._id };
-
-      return request(requestConfig('DELETE', payload));
-
-    })
+  return request(requestConfig('DELETE', payload));
 
 }
 
@@ -99,7 +94,8 @@ describe('web-api', function () {
 
   it(`should delete an engineer`, () => 
 
-    deleteEngineer()
+    getEngineers()
+      .then((engineers) => deleteEngineer(engineers))
       .then((engineers) => expect(engineers).to.have.length(0)));
 
 
