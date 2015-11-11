@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 import mockStdin from 'mock-stdin';
 import fs from 'fs-extra';
-
+import intercept from 'intercept-stdout';
 
 import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
@@ -38,6 +38,13 @@ function sendAnswers (answers) {
 
   answers
     .forEach((answer) => stdin.send(`${answer}\n`));
+
+}
+
+
+function showEngineers (storage, collection) {
+  
+  return cli(storage, collection, 'show');
 
 }
 
@@ -78,20 +85,40 @@ function removeEngineer (storage, collection, engineer) {
 
 
 describe('cli', function () {
-
+  var hook;
 
   after(() => 
 
     fs.removeSync(__dirname + '/*.json'));
 
 
-  it(`should have one stored engineer`, () => 
+  it(`should store an engineer`, () => 
 
     addEngineer(createStorage(), collection)
       .then((engineers) => expect(engineers).to.have.length(1)));
 
 
-  it(`should have deleted one engineer`, () => {
+  it(`should respond with an empty list`, () => {
+
+    let result = '';
+
+    const unhookIntercept = intercept((output) => {
+      result = output.trim();
+    });
+
+    const storage = createStorage();
+
+    return addEngineer(storage, collection)
+      .then(showEngineers(storage, collection))
+      .then(unhookIntercept())
+      .then(console.log('-------------- THE RESULT -------------', result))
+      .then((engineers) => JSON.parse(result.trim()))
+      .then((engineers) => expect(Array.isArray(engineers)).to.be.true);
+
+  });
+
+
+  it(`should delete an engineer`, () => {
 
     const storage = createStorage();
 

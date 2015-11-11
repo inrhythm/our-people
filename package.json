@@ -21,6 +21,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-shell": "^0.4.3",
     "gulp-uglify": "^1.4.0",
+    "intercept-stdout": "^0.1.2",
     "jsdom": "^6.3.0",
     "jshint-stylish": "^2.0.1",
     "mocha": "^2.3.2",
