@@ -40,7 +40,8 @@
     "node-dir": "^0.1.11",
     "request": "^2.65.0",
     "sequelize": "^3.13.0",
-    "sqlite3": "^3.1.1"
+    "sqlite3": "^3.1.1",
+    "our-people-angular-ui": "git@github.com:inrhythm/our-people-angular-ui.git"
   },
   "scripts": {
     "start": "node_modules/.bin/gulp --silent",
