@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 
-import questions, { questionByName, questionValidatorByName } from 'our-people/questions';
+import questions, { questionByName, questionValidatorByName } from 'our-people/questions/add';
 
 
 describe('questions', () => {

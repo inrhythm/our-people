@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 
 
-import { validUrl , invalidUrl } from '../../../helpers/url';
-import { validate , invalidatedMessage } from 'our-people/questions/linkedin';
+import { validUrl , invalidUrl } from '../../../../helpers/url';
+import { validate , invalidatedMessage } from 'our-people/questions/add/linkedin';
 
 
 describe('linkedin question', () => {
