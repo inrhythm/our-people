@@ -12,7 +12,7 @@ import cli from 'our-people/cli';
 
 import { validName } from '../../../helpers/name';
 import { validEmailAddress } from '../../../helpers/email';
-// import { validGithubHandle } from '../../../helpers/github-handle';
+import { validGithubHandle } from '../../../helpers/github-handle';
 import { validUrl } from '../../../helpers/url';
 import { validTwitterHandle } from '../../../helpers/twitter-handle';
 import { validPhoneNumber } from '../../../helpers/phone-number';
@@ -51,13 +51,13 @@ describe('cli add', function () {
 
   function answerQuestions (storage, collection) {
 
-    const promise = cli(storage, collection);
+    const promise = cli(storage, collection, 'add');
 
     sendAnswers([
 
       validName,
       validEmailAddress,
-      // validGithubHandle,
+      validGithubHandle,
       validUrl,
       validTwitterHandle,
       validPhoneNumber
