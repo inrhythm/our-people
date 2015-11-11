@@ -1035,7 +1035,7 @@
     "access": null,
     "description": null,
     "lineNumber": 3,
-    "content": "\n\nimport fs from 'fs-extra';\nimport Promise from 'bluebird';\n\n\nimport randomString from '../../helpers/random';\n\n\nconst readFile = Promise.promisify(fs.readFile);\nconst writeJson = Promise.promisify(fs.writeJson);\nconst ensureFile = Promise.promisify(fs.ensureFile);\n\n\nexport default class FileStorage {\n\n\n  constructor (config) {\n\n    this.path = config.path;\n\n  }\n\n\n  ready () {\n\n    if (!this.cachedReady) {\n    \n      const { path } = this;\n\n      this.cachedReady = ensureFile(path)\n        .then(() => readFile(path, 'utf8'))\n        .then((contents) => isEmptyString(contents) ? {} : JSON.parse(contents)); \n\n    }\n\n    return this.cachedReady;\n\n  }\n\n\n  add (collection, document) {\n\n    return this.ready()\n      .then((store) => ensureStoreHasCollection(store, collection))\n      .then((store) => addDocumentToCollection(store, collection, document))\n      .then((store) => writeStore(this.path, store))\n      .then((store) => store[collection]);\n\n  }\n\n\n  remove (collection, document) {\n\n    return this.ready()\n      .then((store) => removeDocumentFromCollection(store, collection, document))\n      .then((store) => writeStore(this.path, store))\n      .then((store) => store[collection]);\n\n  }\n\n\n  all (collection) {\n\n    return this.ready()\n      .then((store) => store[collection] || []);\n\n  }\n\n\n  drop (collection) {\n\n    return this.ready()\n      .then((store) => clearStoreOfCollection(store, collection))\n      .then((store) => writeStore(this.path, store))\n      .then((store) => store[collection]);\n\n  }\n\n\n}\n\n\n\nfunction isEmptyString (s) {\n\n  return s.replace(/\\s+/g, '') === '';\n\n}\n\n\nfunction ensureStoreHasCollection (store, name) {\n\n  if (!store[name]) {\n\n    store[name] = [];\n\n  }\n\n  return store;\n\n}\n\n\nfunction addDocumentToCollection (store, collection, document) {\n  \n  const id = randomString();\n  document._id = id;\n\n  store[collection]\n    .push(document);\n\n  return store;\n\n}\n\n\nfunction removeDocumentFromCollection (store, collection, document) {\n\n  store[collection] = store[collection]\n    .filter((_document) => _document._id !== document._id);\n\n  return store;\n\n}\n\n\nfunction writeStore (path, store) {\n\n  return writeJson(path, store)\n    .then(() => store);\n\n}\n\n\nfunction clearStoreOfCollection (store, collection) {\n\n  store[collection] = [];\n  return store;\n\n}"
+    "content": "\n\nimport fs from 'fs-extra';\nimport Promise from 'bluebird';\n\n\nimport StorageInterface from '../storage-interface';\nimport randomString from '../../helpers/random';\n\n\nconst readFile = Promise.promisify(fs.readFile);\nconst writeJson = Promise.promisify(fs.writeJson);\nconst ensureFile = Promise.promisify(fs.ensureFile);\n\n\nexport default class FileStorage extends (StorageInterface) {\n\n\n  constructor (config) {\n\n    this.path = config.path;\n\n  }\n\n\n  ready () {\n\n    if (!this.cachedReady) {\n    \n      const { path } = this;\n\n      this.cachedReady = ensureFile(path)\n        .then(() => readFile(path, 'utf8'))\n        .then((contents) => isEmptyString(contents) ? {} : JSON.parse(contents)); \n\n    }\n\n    return this.cachedReady;\n\n  }\n\n\n  add (collection, document) {\n\n    return this.ready()\n      .then((store) => ensureStoreHasCollection(store, collection))\n      .then((store) => addDocumentToCollection(store, collection, document))\n      .then((store) => writeStore(this.path, store))\n      .then((store) => store[collection]);\n\n  }\n\n\n  remove (collection, document) {\n\n    return this.ready()\n      .then((store) => removeDocumentFromCollection(store, collection, document))\n      .then((store) => writeStore(this.path, store))\n      .then((store) => store[collection]);\n\n  }\n\n\n  all (collection) {\n\n    return this.ready()\n      .then((store) => store[collection] || []);\n\n  }\n\n\n  drop (collection) {\n\n    return this.ready()\n      .then((store) => clearStoreOfCollection(store, collection))\n      .then((store) => writeStore(this.path, store))\n      .then((store) => store[collection]);\n\n  }\n\n\n}\n\n\n\nfunction isEmptyString (s) {\n\n  return s.replace(/\\s+/g, '') === '';\n\n}\n\n\nfunction ensureStoreHasCollection (store, name) {\n\n  if (!store[name]) {\n\n    store[name] = [];\n\n  }\n\n  return store;\n\n}\n\n\nfunction addDocumentToCollection (store, collection, document) {\n  \n  const id = randomString();\n  document._id = id;\n\n  store[collection]\n    .push(document);\n\n  return store;\n\n}\n\n\nfunction removeDocumentFromCollection (store, collection, document) {\n\n  store[collection] = store[collection]\n    .filter((_document) => _document._id !== document._id);\n\n  return store;\n\n}\n\n\nfunction writeStore (path, store) {\n\n  return writeJson(path, store)\n    .then(() => store);\n\n}\n\n\nfunction clearStoreOfCollection (store, collection) {\n\n  store[collection] = [];\n  return store;\n\n}"
   },
   {
     "__docId__": 50,
@@ -1050,7 +1050,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 10,
+    "lineNumber": 11,
     "undocument": true,
     "type": {
       "types": [
@@ -1071,7 +1071,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 11,
+    "lineNumber": 12,
     "undocument": true,
     "type": {
       "types": [
@@ -1092,7 +1092,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 12,
+    "lineNumber": 13,
     "undocument": true,
     "type": {
       "types": [
@@ -1113,9 +1113,12 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": "FileStorage",
     "description": null,
-    "lineNumber": 15,
+    "lineNumber": 16,
     "undocument": true,
-    "interface": false
+    "interface": false,
+    "extends": [
+      "lib/our-people/storage/storage-interface~StorageInterface"
+    ]
   },
   {
     "__docId__": 54,
@@ -1127,7 +1130,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#constructor",
     "access": null,
     "description": null,
-    "lineNumber": 18,
+    "lineNumber": 19,
     "undocument": true,
     "params": [
       {
@@ -1149,7 +1152,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#path",
     "access": null,
     "description": null,
-    "lineNumber": 20,
+    "lineNumber": 21,
     "undocument": true,
     "type": {
       "types": [
@@ -1167,7 +1170,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#ready",
     "access": null,
     "description": null,
-    "lineNumber": 25,
+    "lineNumber": 26,
     "undocument": true,
     "params": [],
     "return": {
@@ -1187,7 +1190,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#cachedReady",
     "access": null,
     "description": null,
-    "lineNumber": 31,
+    "lineNumber": 32,
     "undocument": true,
     "type": {
       "types": [
@@ -1205,7 +1208,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#add",
     "access": null,
     "description": null,
-    "lineNumber": 42,
+    "lineNumber": 43,
     "undocument": true,
     "params": [
       {
@@ -1238,7 +1241,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#remove",
     "access": null,
     "description": null,
-    "lineNumber": 53,
+    "lineNumber": 54,
     "undocument": true,
     "params": [
       {
@@ -1271,7 +1274,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#all",
     "access": null,
     "description": null,
-    "lineNumber": 63,
+    "lineNumber": 64,
     "undocument": true,
     "params": [
       {
@@ -1298,7 +1301,7 @@
     "longname": "lib/our-people/storage/file/index.js~FileStorage#drop",
     "access": null,
     "description": null,
-    "lineNumber": 71,
+    "lineNumber": 72,
     "undocument": true,
     "params": [
       {
@@ -1328,7 +1331,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 85,
+    "lineNumber": 86,
     "undocument": true,
     "params": [
       {
@@ -1358,7 +1361,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 92,
+    "lineNumber": 93,
     "undocument": true,
     "params": [
       {
@@ -1394,7 +1397,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 105,
+    "lineNumber": 106,
     "undocument": true,
     "params": [
       {
@@ -1436,7 +1439,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 118,
+    "lineNumber": 119,
     "undocument": true,
     "params": [
       {
@@ -1478,7 +1481,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 128,
+    "lineNumber": 129,
     "undocument": true,
     "params": [
       {
@@ -1514,7 +1517,7 @@
     "importPath": "our-people/lib/our-people/storage/file/index.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 136,
+    "lineNumber": 137,
     "undocument": true,
     "params": [
       {

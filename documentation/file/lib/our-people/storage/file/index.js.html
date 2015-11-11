@@ -70,6 +70,7 @@ import fs from &apos;fs-extra&apos;;
 import Promise from &apos;bluebird&apos;;
 
 
+import StorageInterface from &apos;../storage-interface&apos;;
 import randomString from &apos;../../helpers/random&apos;;
 
 
@@ -78,7 +79,7 @@ const writeJson = Promise.promisify(fs.writeJson);
 const ensureFile = Promise.promisify(fs.ensureFile);
 
 
-export default class FileStorage {
+export default class FileStorage extends (StorageInterface) {
 
 
   constructor (config) {
