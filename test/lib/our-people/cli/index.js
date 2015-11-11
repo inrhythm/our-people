@@ -98,11 +98,11 @@ describe('cli', function () {
       .then((engineers) => expect(engineers).to.have.length(1)));
 
 
-  it(`should respond with an empty list`, () => {
+  it(`should respond with an engineer`, () => {
 
     let result = '';
 
-    const unhookIntercept = intercept((output) => {
+    intercept((output) => {
       result = output.trim();
     });
 
@@ -110,10 +110,8 @@ describe('cli', function () {
 
     return addEngineer(storage, collection)
       .then(showEngineers(storage, collection))
-      .then(unhookIntercept())
-      .then(console.log('-------------- THE RESULT -------------', result))
-      .then((engineers) => JSON.parse(result.trim()))
-      .then((engineers) => expect(Array.isArray(engineers)).to.be.true);
+      .then((engineers) => JSON.parse(result))
+      .then((engineers) => expect(engineers).to.have.length(1));
 
   });
 
