@@ -34,9 +34,9 @@ function requestConfig (method, body) {
 
 // GET
 
-function engineers () {
+function getEngineers () {
 
-  return request(url);
+  return request(requestConfig('GET'));
 
 }
 
@@ -46,6 +46,22 @@ function engineers () {
 function addEngineer () {
 
   return request(requestConfig('POST', createEngineer()));
+
+}
+
+
+// DELETE
+
+function deleteEngineer () {
+
+  return getEngineers()
+    .then((engineers) => {
+
+      const payload = { _id : engineers[0]._id };
+
+      return request(requestConfig('DELETE', payload));
+
+    })
 
 }
 
@@ -77,8 +93,14 @@ describe('web-api', function () {
   it(`should add an engineer`, () => 
 
     addEngineer()
-      .then(engineers())
+      .then(getEngineers())
       .then((engineers) => expect(engineers).to.have.length(1)));
+
+
+  it(`should delete an engineer`, () => 
+
+    deleteEngineer()
+      .then((engineers) => expect(engineers).to.have.length(0)));
 
 
 });
