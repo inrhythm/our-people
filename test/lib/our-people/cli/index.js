@@ -77,6 +77,12 @@ function removeEngineer (storage, collection, engineer) {
 }
 
 
+function updateEngineer (storage, collection, engineer) {
+
+  // const promise = cli(storage, collection, 'update')
+}
+
+
 describe('cli', function () {
 
 
