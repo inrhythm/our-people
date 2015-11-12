@@ -155,7 +155,7 @@ describe('web-api', function () {
 
           engineer.name = 'Iron Man';
 
-          return updateEngineer(engineers[0]);
+          return updateEngineer(engineer);
 
         })
         .then((engineers) => expect(engineers[0].name).to.equal('Iron Man')));

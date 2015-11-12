@@ -9,7 +9,7 @@ import fs from 'fs-extra';
 
 
 const validName = 'engineers';
-const validValue = { name: 'jesse' };
+const validValue = { name: 'jesse', _id: '7e6068ca80ea4f66c23c0295c8716100' };
 
 
 function createStorage () {
@@ -47,11 +47,18 @@ describe('file store', function () {
   }
 
 
+  function updatedStore (storage, update) {
+    
+    return storage(validName)
+      .update(update);
+
+  }
+
+
   function allStoreValues (storage) {
 
     return valueAddedToStore(storage)
       .then(() => storage(validName).all());
-
 
   }
 
@@ -103,6 +110,30 @@ describe('file store', function () {
       storeWithRemovedValue(createStorage())
         .then((store) => expect(store).to.have.length(0)));
 
+
+  });
+
+
+  describe('update', function () {
+
+
+    it('should update a value in the store', () => {
+
+      const storage = createStorage();
+
+      valueAddedToStore(storage)
+        .then((store) => {
+
+          let value = store[0];
+
+          value.name = 'Marty McFly';
+
+          return updatedStore(storage, value);
+
+        })
+        .then((store) => expect(store[0].name).to.equal('Marty McFly'))
+
+    });
 
   });
 
