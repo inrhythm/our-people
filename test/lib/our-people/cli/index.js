@@ -84,15 +84,7 @@ function removeEngineer (storage, collection, engineer) {
 }
 
 
-function updateEngineer (storage, collection, engineer) {
-
-  const args = [
-    engineer._id,
-    'name',
-    'John Oliver'
-  ];
-
-  console.log('args sent: ', args);
+function updateEngineer (storage, collection, args) {
 
   return cli(storage, collection, 'update', args);
 
@@ -102,44 +94,44 @@ function updateEngineer (storage, collection, engineer) {
 describe('cli', function () {
 
 
-  after(() => 
+  // after(() => 
 
-    fs.removeSync(__dirname + '/*.json'));
-
-
-  it(`should store an engineer`, () => 
-
-    addEngineer(createStorage(), collection)
-      .then((engineers) => expect(engineers).to.have.length(1)));
+  //   fs.removeSync(__dirname + '/*.json'));
 
 
-  it(`should respond with an engineer`, () => {
+  // it(`should store an engineer`, () => 
 
-    let result = '';
-
-    intercept((output) => {
-      result = output.trim();
-    });
-
-    const storage = createStorage();
-
-    return addEngineer(storage, collection)
-      .then(showEngineers(storage, collection))
-      .then(() => JSON.parse(result))
-      .then((engineers) => expect(engineers).to.have.length(1));
-
-  });
+  //   addEngineer(createStorage(), collection)
+  //     .then((engineers) => expect(engineers).to.have.length(1)));
 
 
-  it(`should delete an engineer`, () => {
+  // it(`should respond with an engineer`, () => {
 
-    const storage = createStorage();
+  //   let result = '';
 
-    return addEngineer(storage, collection)
-      .then((engineers) => removeEngineer(storage, collection, engineers[0]))
-      .then((engineers) => expect(engineers).to.have.length(0));
+  //   intercept((output) => {
+  //     result = output.trim();
+  //   });
 
-  });
+  //   const storage = createStorage();
+
+  //   return addEngineer(storage, collection)
+  //     .then(showEngineers(storage, collection))
+  //     .then(() => JSON.parse(result))
+  //     .then((engineers) => expect(engineers).to.have.length(1));
+
+  // });
+
+
+  // it(`should delete an engineer`, () => {
+
+  //   const storage = createStorage();
+
+  //   return addEngineer(storage, collection)
+  //     .then((engineers) => removeEngineer(storage, collection, engineers[0]))
+  //     .then((engineers) => expect(engineers).to.have.length(0));
+
+  // });
 
 
   it(`should update an engineer`, () => {
@@ -153,10 +145,27 @@ describe('cli', function () {
     const storage = createStorage();
 
     return addEngineer(storage, collection)
-      .then((engineers) => updateEngineer(storage, collection, engineers[0]))
+      .then((engineers) => {
+
+        const args = [
+          engineers[0]._id,
+          'name',
+          'John Oliver'
+        ];
+
+        return updateEngineer(storage, collection, args);
+
+      })
       .then(showEngineers(storage, collection))
-      .then((engineers) => console.log('result of engineers: ', engineers))
-      .then((engineers) => JSON.parse(result))
+      .then(() => {
+
+        return new Promise(function (resolve) {
+
+          resolve(JSON.parse(result));
+
+        });
+        
+      })
       .then((engineers) => expect(engineers[0].name).to.equal('John Oliver'));
 
   });
