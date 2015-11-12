@@ -94,53 +94,49 @@ function updateEngineer (storage, collection, args) {
 describe('cli', function () {
 
 
-  // after(() => 
+  after(() => 
 
-  //   fs.removeSync(__dirname + '/*.json'));
-
-
-  // it(`should store an engineer`, () => 
-
-  //   addEngineer(createStorage(), collection)
-  //     .then((engineers) => expect(engineers).to.have.length(1)));
+    fs.removeSync(__dirname + '/*.json'));
 
 
-  // it(`should respond with an engineer`, () => {
+  it(`should store an engineer`, () => 
 
-  //   let result = '';
-
-  //   intercept((output) => {
-  //     result = output.trim();
-  //   });
-
-  //   const storage = createStorage();
-
-  //   return addEngineer(storage, collection)
-  //     .then(showEngineers(storage, collection))
-  //     .then(() => JSON.parse(result))
-  //     .then((engineers) => expect(engineers).to.have.length(1));
-
-  // });
+    addEngineer(createStorage(), collection)
+      .then((engineers) => expect(engineers).to.have.length(1)));
 
 
-  // it(`should delete an engineer`, () => {
-
-  //   const storage = createStorage();
-
-  //   return addEngineer(storage, collection)
-  //     .then((engineers) => removeEngineer(storage, collection, engineers[0]))
-  //     .then((engineers) => expect(engineers).to.have.length(0));
-
-  // });
-
-
-  it(`should update an engineer`, () => {
+  it(`should respond with an engineer`, () => {
 
     let result = '';
 
     intercept((output) => {
       result = output.trim();
     });
+
+    const storage = createStorage();
+
+    return addEngineer(storage, collection)
+      .then(showEngineers(storage, collection))
+      .then(() => JSON.parse(result))
+      .then((engineers) => expect(engineers).to.have.length(1));
+
+  });
+
+
+  it(`should delete an engineer`, () => {
+
+    const storage = createStorage();
+
+    return addEngineer(storage, collection)
+      .then((engineers) => removeEngineer(storage, collection, engineers[0]))
+      .then((engineers) => expect(engineers).to.have.length(0));
+
+  });
+
+
+  it(`should update an engineer`, () => {
+
+    let result = '';
 
     const storage = createStorage();
 
@@ -156,12 +152,21 @@ describe('cli', function () {
         return updateEngineer(storage, collection, args);
 
       })
-      .then(showEngineers(storage, collection))
+      .then(() => {
+
+        let interceptClose = intercept((output) => {
+          result = output.trim();
+        });
+
+        return showEngineers(storage, collection);
+
+      })
       .then(() => {
 
         return new Promise(function (resolve) {
 
           resolve(JSON.parse(result));
+
 
         });
         
