@@ -59,6 +59,14 @@ function deleteEngineer (engineer) {
 }
 
 
+// PUT
+
+function updateEngineer (engineer) {
+
+  return request(requestConfig('PUT', engineer));
+
+}
+
 
 describe('web-api', function () {
 
@@ -115,7 +123,6 @@ describe('web-api', function () {
   });
 
 
-  
   describe('DELETE /', function () {
 
     it(`should respond with an empty list`, () =>
@@ -132,6 +139,26 @@ describe('web-api', function () {
         .then((engineers) => deleteEngineer(engineers[0]))
         .then((engineers) => expect(engineers).to.have.length(0)));
 
+
+  });
+
+
+  describe('PUT /', function () {
+
+    it(`should update an engineer`, () => 
+
+      addEngineer()
+        .then(getEngineers())
+        .then((engineers) => {
+
+          let engineer = engineers[0];
+
+          engineer.name = 'Iron Man';
+
+          return updateEngineer(engineers[0]);
+
+        })
+        .then((engineers) => expect(engineers[0].name).to.equal('Iron Man')));
 
   });
   
