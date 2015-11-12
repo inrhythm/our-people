@@ -131,7 +131,7 @@ describe('file store', function () {
           return updatedStore(storage, value);
 
         })
-        .then((store) => expect(store[0].name).to.equal('Marty McFly'))
+        .then((store) => expect(store[0].name).to.equal('Marty McFly'));
 
     });
 

@@ -7,7 +7,6 @@ import fs from 'fs-extra';
 
 import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
-import createEngineer from '../../../helpers/engineer';
 import cli from 'our-people/cli';
 
 
@@ -97,7 +96,7 @@ describe('cli', function () {
 
     return addEngineer(storage, collection)
       .then((engineers) => removeEngineer(storage, collection, engineers[0]))
-      .then((engineers) => expect(engineers).to.have.length(0))
+      .then((engineers) => expect(engineers).to.have.length(0));
 
   });
 
