@@ -83,21 +83,8 @@ function removeEngineer (storage, collection, engineer) {
 }
 
 
-function updateEngineer (storage, collection, engineer) {
-
-  const args = [
-    engineer._id,
-    'name',
-    'John Oliver'
-  ];
-
-  return cli(storage, collection, 'update', args);
-
-}
-
-
 describe('cli', function () {
-  var hook;
+
 
   after(() => 
 
@@ -122,7 +109,7 @@ describe('cli', function () {
 
     return addEngineer(storage, collection)
       .then(showEngineers(storage, collection))
-      .then((engineers) => JSON.parse(result))
+      .then(() => JSON.parse(result))
       .then((engineers) => expect(engineers).to.have.length(1));
 
   });
