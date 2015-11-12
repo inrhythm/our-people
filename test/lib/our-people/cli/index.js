@@ -100,7 +100,7 @@ function updateEngineer (storage, collection, engineer) {
 
 
 describe('cli', function () {
-  var hook;
+
 
   after(() => 
 
@@ -125,7 +125,7 @@ describe('cli', function () {
 
     return addEngineer(storage, collection)
       .then(showEngineers(storage, collection))
-      .then((engineers) => JSON.parse(result))
+      .then(() => JSON.parse(result))
       .then((engineers) => expect(engineers).to.have.length(1));
 
   });
