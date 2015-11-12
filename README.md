@@ -81,21 +81,21 @@ Example:
 
 All operations can be performed by hitting the `/` endpoint.
 
-	* `GET` will return a JSON array of engineers.
-	* `PUT` will update the specified user and return all engineers.
-	* `DELETE` will remove the specified user and return all engineers.
-	* `POST` will add an engineer with the specified fields.
+* `GET` will return a JSON array of engineers.
+* `PUT` will update the specified user and return all engineers.
+* `DELETE` will remove the specified user and return all engineers.
+* `POST` will add an engineer with the specified fields.
 
 ## Required fields
 
 The following fields are required for updating an engineer:
 
-	* name
-	* email
-	* github
-	* linkedin
-	* twitter
-	* phone
+* name
+* email
+* github
+* linkedin
+* twitter
+* phone
 
 # License
 
