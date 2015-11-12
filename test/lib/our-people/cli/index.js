@@ -76,6 +76,19 @@ function removeEngineer (storage, collection, engineer) {
 }
 
 
+function updateEngineer (storage, collection, engineer) {
+
+  const args = [
+    engineer._id,
+    'name',
+    'John Oliver'
+  ];
+
+  return cli(storage, collection, 'update', args);
+
+}
+
+
 describe('cli', function () {
 
 
@@ -88,6 +101,25 @@ describe('cli', function () {
 
     addEngineer(createStorage(), collection)
       .then((engineers) => expect(engineers).to.have.length(1)));
+
+
+  it(`should update an engineer`, () => {
+
+    let result = '';
+
+    intercept((output) => {
+      result = output.trim();
+    });
+
+    const storage = createStorage();
+
+    return addEngineer(storage, collection)
+      .then((engineers) => updateEngineer(storage, collection, engineers[0]))
+      .then(showEngineers(storage, collection))
+      .then((engineers) => JSON.parse(result))
+      .then((engineers) => expect(engineers[0]).to.equal('John Oliver'));
+
+  });
 
 
   it(`should have deleted one engineer`, () => {
