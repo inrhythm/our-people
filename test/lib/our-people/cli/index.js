@@ -7,6 +7,7 @@ import intercept from 'intercept-stdout';
 
 import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
+import createEngineer from '../../../helpers/engineer';
 import cli from 'our-people/cli';
 
 
@@ -91,6 +92,8 @@ function updateEngineer (storage, collection, engineer) {
     'John Oliver'
   ];
 
+  console.log('args sent: ', args);
+
   return cli(storage, collection, 'update', args);
 
 }
@@ -135,6 +138,26 @@ describe('cli', function () {
     return addEngineer(storage, collection)
       .then((engineers) => removeEngineer(storage, collection, engineers[0]))
       .then((engineers) => expect(engineers).to.have.length(0));
+
+  });
+
+
+  it(`should update an engineer`, () => {
+
+    let result = '';
+
+    intercept((output) => {
+      result = output.trim();
+    });
+
+    const storage = createStorage();
+
+    return addEngineer(storage, collection)
+      .then((engineers) => updateEngineer(storage, collection, engineers[0]))
+      .then(showEngineers(storage, collection))
+      .then((engineers) => console.log('result of engineers: ', engineers))
+      .then((engineers) => JSON.parse(result))
+      .then((engineers) => expect(engineers[0].name).to.equal('John Oliver'));
 
   });
 
