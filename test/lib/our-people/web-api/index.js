@@ -32,8 +32,12 @@ function requestConfig (method, body) {
    
 }
 
-// GET
 
+/**
+ * Sends a GET request to retrieve a JSON list of engineers.
+ * 
+ * @return {Promise<String>} JSON string list of engineers.
+ */
 function getEngineers () {
 
   return request(requestConfig('GET'));
@@ -41,8 +45,11 @@ function getEngineers () {
 }
 
 
-// POST
-
+/**
+ * Sends a POST request to add a new test engineer.
+ *
+ * @return {Promsise<String>} JSON string list of engineers.
+ */
 function addEngineer () {
 
   return request(requestConfig('POST', createEngineer()));
@@ -50,8 +57,12 @@ function addEngineer () {
 }
 
 
-// DELETE
-
+/**
+ * Sends a DELETE request to remove an engineer.
+ * 
+ * @param  {Object} engineer requires `_id` property
+ * @return {Promise<String>} JSON string list of remaining engineers.
+ */
 function deleteEngineer (engineer) {
 
   return request(requestConfig('DELETE', engineer));
@@ -59,8 +70,13 @@ function deleteEngineer (engineer) {
 }
 
 
-// PUT
-
+/**
+ * Sends a PUT request to update an engineer's document.
+ * 
+ * @param  {Object} engineer requires `_id` property.
+ *                           updates all properties set on obj.
+ * @return {Promise<String>} JSON string list of engineers.
+ */
 function updateEngineer (engineer) {
 
   return request(requestConfig('PUT', engineer));

@@ -22,6 +22,11 @@ const stdin = mockStdin.stdin();
 const collection = 'engineers';
 
 
+/**
+ * Initializes a new instance of `Storage`.
+ * 
+ * @return {Storage} new storage instance
+ */
 function createStorage () {
 
   return createFileStorage({
@@ -33,6 +38,12 @@ function createStorage () {
 }
 
 
+/**
+ * For each answer, sends cli input of it.
+ * 
+ * @param  {Array<String>} answers list of answers to questions
+ * @return {Void}
+ */
 function sendAnswers (answers) {
 
   answers
@@ -41,6 +52,13 @@ function sendAnswers (answers) {
 }
 
 
+/**
+ * Returns the cli result containing json array of engineers.
+ * 
+ * @param  {Storage} storage
+ * @param  {String}  collection  name of collection
+ * @return {Promise<Void>}
+ */
 function showEngineers (storage, collection) {
   
   return cli(storage, collection, 'show');
@@ -48,6 +66,12 @@ function showEngineers (storage, collection) {
 }
 
 
+/**
+ * Adds an engineer by answering the questions sequence in cli.
+ * 
+ * @param {Storage} storage
+ * @param {String}  collection  name of collection
+ */
 function addEngineer (storage, collection) {
 
   const promise = cli(storage, collection, 'add');
@@ -68,6 +92,15 @@ function addEngineer (storage, collection) {
 }
 
 
+/**
+ * Removes an engineer from a collection in storage
+ * 
+ * @param  {Storage} storage    
+ * @param  {String}  collection  name of collection that engineer is in
+ * @param  {Object}  engineer    engineer to remove
+ *                               requires `_id` property
+ * @return {Promise<Void>}
+ */
 function removeEngineer (storage, collection, engineer) {
 
   const promise = cli(storage, collection, 'remove');
