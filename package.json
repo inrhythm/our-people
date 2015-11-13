@@ -51,6 +51,7 @@
     "node": "babel-node ./index.js",
     "phantom": "phantomjs ./bundle.js",
     "document": "node_modules/.bin/esdoc -c esdoc.json",
+    "ui:web:angular": "node_modules/.bin/babel-node lib/angular-ui.js",
     "test": "NODE_PATH=./lib node_modules/.bin/mocha --color --compilers js:babel-core/register -R spec --recursive test"
   },
   "author": "Jesse Earle",
