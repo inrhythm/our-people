@@ -11,12 +11,12 @@ babel-node lib/cli add
 Example:
 
 ```
-? What is your name? *John Doe*
-? Please enter email address :- *jdoe@inrhythm.com*
-? Please enter your github handle :- *https://github.com/jshor*
-? Please enter your linkedin profile link :- *http://linkedin.com/in/jshor*
-? Please enter your twitter handle :- *https://twitter.com/jshor*
-? What's your phone number (Existing :TODO)? *1234567890*
+? What is your name? John Doe
+? Please enter email address :- jdoe@inrhythm.com
+? Please enter your github handle :- https://github.com/jshor
+? Please enter your linkedin profile link :- http://linkedin.com/in/jshor
+? Please enter your twitter handle :- https://twitter.com/jshor
+? What's your phone number (Existing :TODO)? 1234567890
 ```
 
 This will add the document to the `engineers` property array.
@@ -24,7 +24,7 @@ This will add the document to the `engineers` property array.
 ### Updating the info of an existing engineer
 
 ```
-babel-node lib/cli update *<user-id> <field-name-to-update> <value-to-update-with>*
+babel-node lib/cli update <user-id> <field-name-to-update> <value-to-update-with>
 ```
 
 `<user-id>` is the `md5` hash _id of the user.
@@ -40,7 +40,7 @@ You will then be prompted to enter the `md5` hash _id of the user.
 Example:
 
 ```
-? Please enter the _id of the engineer to delete: *4bee0200934de37db2c9f7f3af4d0*
+? Please enter the _id of the engineer to delete: 4bee0200934de37db2c9f7f3af4d0
 ```
 
 ### Showing all users
