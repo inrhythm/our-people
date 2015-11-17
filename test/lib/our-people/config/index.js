@@ -9,6 +9,11 @@ import getConfiguration from 'our-people/config';
 describe('config', function () {
 
 
+  /**
+   * Returns a list of branches.
+   * 
+   * @return {Array<String>} list of branch names
+   */
   function branches () {
 
     return [  
@@ -22,6 +27,11 @@ describe('config', function () {
   }
 
 
+  /**
+   * Returns a list of configurations.
+   * 
+   * @return {Array<String>}
+   */
   function configurations () {
 
     return branches()
