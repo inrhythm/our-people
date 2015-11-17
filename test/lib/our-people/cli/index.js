@@ -8,7 +8,14 @@ import intercept from 'intercept-stdout';
 import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
 import createEngineer from '../../../helpers/engineer';
-import cli from 'our-people/cli';
+import { 
+
+  cli, 
+  updateCollectionItem, 
+  selectionPrompt,
+  renderUpdateOptions
+
+} from 'our-people/cli';
 
 
 import { validName } from '../../../helpers/name';
@@ -60,7 +67,7 @@ function sendAnswers (answers) {
  * @param  {String}  collection  name of collection
  * @return {Promise<Void>}
  */
-function showEngineers (storage, collection) {
+function showDocuments (storage, collection) {
   
   return cli(storage, collection, 'show');
 
@@ -73,7 +80,7 @@ function showEngineers (storage, collection) {
  * @param {Storage} storage
  * @param {String}  collection  name of collection
  */
-function addEngineer (storage, collection) {
+function addDocument (storage, collection) {
 
   const promise = cli(storage, collection, 'add');
 
@@ -102,13 +109,13 @@ function addEngineer (storage, collection) {
  *                               requires `_id` property
  * @return {Promise<Void>}
  */
-function removeEngineer (storage, collection, engineer) {
+function removeDocument (storage, collection, document) {
 
   const promise = cli(storage, collection, 'remove');
 
   sendAnswers([
 
-    engineer._id
+    document._id
 
   ]);
 
@@ -117,9 +124,65 @@ function removeEngineer (storage, collection, engineer) {
 }
 
 
-function updateEngineer (storage, collection, args) {
+function updateDocument (storage, collection, update) {
 
-  return cli(storage, collection, 'update', args);
+  const promise = cli(storage, collection, 'update', update.email);
+
+  // console.log('update', update);
+  sendAnswers([
+
+    0,
+    'email', //update.field,
+    update.value
+
+  ]);
+
+  return promise;
+
+}
+
+
+/**
+ * Updates a document in storage.
+ * 
+ * @param  {Storage} storage
+ * @param  {String}  collectionName
+ * @return {Promise}
+ */
+function updateDocument (storage, collectionName, document) {
+
+  return new Promise(function (resolve, reject) {
+
+    renderUpdateOptions(storage, collectionName, document._id)
+      .then((items) => {
+
+        return new Promise(function (resolve, reject) {
+
+          const promise = selectionPrompt(storage, collectionName, items);
+
+          sendAnswers([0]);
+
+          promise
+            .then((option) => {
+
+              sendAnswers([
+                'name',
+                'John Oliver'
+              ]);
+
+              return updateCollectionItem(storage, collectionName, items[option]);
+
+            })
+            .then(resolve)
+            .catch(reject);
+
+        });
+
+      })
+      .then(resolve)
+      .catch(reject);
+
+  });
 
 }
 
@@ -132,13 +195,19 @@ describe('cli', function () {
     fs.removeSync(__dirname + '/*.json'));
 
 
-  it(`should store an engineer`, () => 
+  /**
+   * Add document
+   */
+  it(`should store a document`, () => 
 
-    addEngineer(createStorage(), collection)
-      .then((engineers) => expect(engineers).to.have.length(1)));
+    addDocument(createStorage(), collection)
+      .then((documents) => expect(documents).to.have.length(1)));
 
 
-  it(`should respond with an engineer`, () => {
+  /**
+   * Show documents
+   */
+  it(`should respond with a document`, () => {
 
     let result = '';
 
@@ -148,41 +217,45 @@ describe('cli', function () {
 
     const storage = createStorage();
 
-    return addEngineer(storage, collection)
-      .then(showEngineers(storage, collection))
+    return addDocument(storage, collection)
+      .then(showDocuments(storage, collection))
       .then(() => JSON.parse(result))
-      .then((engineers) => expect(engineers).to.have.length(1));
+      .then((documents) => expect(documents).to.have.length(1));
 
   });
 
 
-  it(`should delete an engineer`, () => {
+  /**
+   * Delete document
+   */
+  it(`should delete a document`, () => {
 
     const storage = createStorage();
 
-    return addEngineer(storage, collection)
-      .then((engineers) => removeEngineer(storage, collection, engineers[0]))
-      .then((engineers) => expect(engineers).to.have.length(0));
+    return addDocument(storage, collection)
+      .then((documents) => removeDocument(storage, collection, documents[0]))
+      .then((documents) => expect(documents).to.have.length(0));
 
   });
 
 
-  it(`should update an engineer`, () => {
+  /**
+   * Update document
+   */
+  it(`should update a document`, () => {
 
     let result = '';
 
+    let doc = {};
+
     const storage = createStorage();
 
-    return addEngineer(storage, collection)
-      .then((engineers) => {
+    return addDocument(storage, collection)
+      .then((documents) => {
 
-        const args = [
-          engineers[0]._id,
-          'name',
-          'John Oliver'
-        ];
+        doc = documents[0];
 
-        return updateEngineer(storage, collection, args);
+        return updateDocument(storage, collection, doc);
 
       })
       .then(() => {
@@ -191,20 +264,16 @@ describe('cli', function () {
           result = output.trim();
         });
 
-        return showEngineers(storage, collection);
+        return showDocuments(storage, collection);
 
       })
       .then(() => {
 
-        return new Promise(function (resolve) {
+        const docList = JSON.parse(result);
 
-          resolve(JSON.parse(result));
-
-
-        });
+        expect(docList[0].name).to.equal('John Oliver');
         
       })
-      .then((engineers) => expect(engineers[0].name).to.equal('John Oliver'));
 
   });
 
