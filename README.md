@@ -12,11 +12,11 @@ Example:
 
 ```
 ? What is your name? John Doe
-? Please enter email address :- jdoe@inrhythm.com
-? Please enter your github handle :- https://github.com/jshor
-? Please enter your linkedin profile link :- http://linkedin.com/in/jshor
-? Please enter your twitter handle :- https://twitter.com/jshor
-? What's your phone number (Existing :TODO)? 1234567890
+? Please enter email address: jdoe@inrhythm.com
+? Please enter your GitHub handle: https://github.com/jshor
+? Please enter your LinkedIn profile url: http://linkedin.com/in/jshor
+? Please enter your Twitter handle: https://twitter.com/jshor
+? Please enter your phone number: 1234567890
 ```
 
 This will add the document to the `engineers` property array.
