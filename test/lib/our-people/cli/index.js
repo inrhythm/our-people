@@ -7,7 +7,6 @@ import intercept from 'intercept-stdout';
 
 import createFileStorage from 'our-people/storage/file-storage';
 import randomString from 'our-people/helpers/random';
-import createEngineer from '../../../helpers/engineer';
 import { 
 
   cli, 
@@ -260,7 +259,7 @@ describe('cli', function () {
       })
       .then(() => {
 
-        let interceptClose = intercept((output) => {
+        intercept((output) => {
           result = output.trim();
         });
 
@@ -273,7 +272,7 @@ describe('cli', function () {
 
         expect(docList[0].name).to.equal('John Oliver');
         
-      })
+      });
 
   });
 
