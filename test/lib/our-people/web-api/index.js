@@ -7,14 +7,13 @@ import webApi from 'our-people/web-api';
 
 
 import randomFileStorage, { removeAllRandomFileStorages } from '../../../helpers/random-file-storage';
-import createEngineer from '../../../helpers/engineer';
 import serve from '../../../helpers/serve';
-
+import createEngineer from '../../../helpers/engineer';
 
 const host = 'localhost';
 const port = '4567';
 
-const url = `http://${host}:${port}/`;
+const url = `http://${host}:${port}/engineers`; // could be designers?
 
 
 function requestConfig (method, body) {
@@ -34,11 +33,11 @@ function requestConfig (method, body) {
 
 
 /**
- * Sends a GET request to retrieve a JSON list of engineers.
+ * Sends a GET request to retrieve a JSON list of documents.
  * 
- * @return {Promise<String>} JSON string list of engineers.
+ * @return {Promise<String>} JSON string list of documents.
  */
-function getEngineers () {
+function getDocuments () {
 
   return request(requestConfig('GET'));
 
@@ -46,11 +45,11 @@ function getEngineers () {
 
 
 /**
- * Sends a POST request to add a new test engineer.
+ * Sends a POST request to add a new test document.
  *
- * @return {Promsise<String>} JSON string list of engineers.
+ * @return {Promsise<String>} JSON string list of documents.
  */
-function addEngineer () {
+function addDocument () {
 
   return request(requestConfig('POST', createEngineer()));
 
@@ -58,28 +57,28 @@ function addEngineer () {
 
 
 /**
- * Sends a DELETE request to remove an engineer.
+ * Sends a DELETE request to remove an document.
  * 
- * @param  {Object} engineer requires `_id` property
- * @return {Promise<String>} JSON string list of remaining engineers.
+ * @param  {Object} document requires `_id` property
+ * @return {Promise<String>} JSON string list of remaining documents.
  */
-function deleteEngineer (engineer) {
+function deleteDocument (document) {
 
-  return request(requestConfig('DELETE', engineer));
+  return request(requestConfig('DELETE', document));
 
 }
 
 
 /**
- * Sends a PUT request to update an engineer's document.
+ * Sends a PUT request to update an document's document.
  * 
- * @param  {Object} engineer requires `_id` property.
+ * @param  {Object} document requires `_id` property.
  *                           updates all properties set on obj.
- * @return {Promise<String>} JSON string list of engineers.
+ * @return {Promise<String>} JSON string list of documents.
  */
-function updateEngineer (engineer) {
+function updateDocument (document) {
 
-  return request(requestConfig('PUT', engineer));
+  return request(requestConfig('PUT', document));
 
 }
 
@@ -95,7 +94,10 @@ describe('web-api', function () {
     server = serve(
       webApi, 
       randomFileStorage(__dirname), 
-      'engineers', 
+      [
+        'engineers',
+        'designers'
+      ], 
       port,
       done));
 
@@ -108,73 +110,73 @@ describe('web-api', function () {
   });
 
 
-  describe('GET /', function () {
+  describe('GET /:collection', function () {
 
     
     it(`should return an empty array`, () =>
 
-      getEngineers()
-        .then((engineers) => expect(engineers).to.have.length(0)));
+      getDocuments()
+        .then((documents) => expect(documents).to.have.length(0)));
 
 
   });
 
 
-  describe('POST /', function () {
+  describe('POST /:collection', function () {
 
 
     it(`should respond with an empty list`, () =>
 
-      addEngineer()
-        .then((engineers) => expect(engineers).to.have.length(1)));
+      addDocument()
+        .then((documents) => expect(documents).to.have.length(1)));
 
 
-    it(`should add an engineer`, () => 
+    it(`should add an document`, () => 
 
-      addEngineer()
-        .then(getEngineers())
-        .then((engineers) => expect(engineers).to.have.length(1)));
+      addDocument()
+        .then(getDocuments())
+        .then((documents) => expect(documents).to.have.length(1)));
 
 
   });
 
 
-  describe('DELETE /', function () {
+  describe('DELETE /:collection', function () {
 
     it(`should respond with an empty list`, () =>
 
-      addEngineer()
-        .then((engineers) => deleteEngineer(engineers[0]))
-        .then((engineers) => expect(engineers).to.have.length(0)));
+      addDocument()
+        .then((documents) => deleteDocument(documents[0]))
+        .then((documents) => expect(documents).to.have.length(0)));
 
 
-    it(`should delete an engineer`, () => 
+    it(`should delete an document`, () => 
 
-      addEngineer()
-        .then(getEngineers())
-        .then((engineers) => deleteEngineer(engineers[0]))
-        .then((engineers) => expect(engineers).to.have.length(0)));
+      addDocument()
+        .then(getDocuments())
+        .then((documents) => deleteDocument(documents[0]))
+        .then((documents) => expect(documents).to.have.length(0)));
 
 
   });
 
 
-  describe('PUT /', function () {
+  describe('PUT /:collection', function () {
 
-    it(`should update an engineer`, () => 
+    it(`should update an document`, () => 
 
-      addEngineer()
-        .then(getEngineers())
-        .then((engineers) => {
+      addDocument()
+        .then(getDocuments())
+        .then((documents) => {
 
-          let engineer = engineers[0];
+          let document = documents[0];
 
-          engineer.name = 'Iron Man';
+          document.name = 'Iron Man';
 
-          return updateEngineer(engineer);
+          return updateDocument(document);
 
         })
-        .then((engineers) => expect(engineers[0].name).to.equal('Iron Man')));
+        .then((documents) => expect(documents[0].name).to.equal('Iron Man')));
 
   });
   
